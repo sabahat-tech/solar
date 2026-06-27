@@ -1,0 +1,590 @@
+/* ═══════════════════════════════════════════
+   SOLAR SYSTEM VISUALIZER — style.css
+   ═══════════════════════════════════════════ */
+
+/* ── CSS VARIABLES (Color Theme) ── */
+:root {
+  --sun-glow:  #ffdd57;
+  --space-bg:  #000010;
+  --panel-bg:  rgba(10, 15, 40, 0.92);
+  --accent:    #00d4ff;
+  --accent2:   #ff6b6b;
+}
+
+/* ── RESET & BASE ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--space-bg);
+  color: #fff;
+  font-family: 'Exo 2', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ════════════════════════════════════
+   NAVBAR
+════════════════════════════════════ */
+.navbar {
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.navbar-brand {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--accent) !important;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.nav-badge {
+  font-size: 0.7rem;
+  background: rgba(0, 212, 255, 0.15);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-family: 'Exo 2', sans-serif;
+}
+
+/* ════════════════════════════════════
+   STAR BACKGROUND CANVAS
+════════════════════════════════════ */
+#stars-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════
+   MAIN LAYOUT WRAPPER
+════════════════════════════════════ */
+.main-wrapper {
+  position: relative;
+  z-index: 1;
+  padding-top: 70px;
+}
+
+/* ════════════════════════════════════
+   SOLAR SYSTEM CANVAS
+════════════════════════════════════ */
+#solar-canvas {
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+/* ════════════════════════════════════
+   CONTROL PANEL
+════════════════════════════════════ */
+.control-panel {
+  background: var(--panel-bg);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 16px;
+  padding: 20px 24px;
+  backdrop-filter: blur(12px);
+  margin: 16px auto;
+  max-width: 700px;
+}
+
+.control-panel h6 {
+  font-family: 'Orbitron', monospace;
+  color: var(--accent);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* ── Custom Buttons ── */
+.btn-space {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.btn-space:hover,
+.btn-space.active {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 16px var(--accent);
+}
+
+.btn-space-danger {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+
+.btn-space-danger:hover {
+  background: var(--accent2);
+  color: #fff;
+  box-shadow: 0 0 16px var(--accent2);
+}
+
+/* ── Speed Label ── */
+.speed-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+/* ── Bootstrap Range Slider Custom Colors ── */
+.form-range::-webkit-slider-thumb {
+  background: var(--accent);
+}
+
+.form-range::-webkit-slider-runnable-track {
+  background: rgba(0, 212, 255, 0.2);
+}
+
+/* ════════════════════════════════════
+   SPACE FACTS TICKER
+════════════════════════════════════ */
+.fact-ticker {
+  background: rgba(0, 212, 255, 0.06);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin: 0 auto 20px;
+  max-width: 700px;
+  font-size: 0.85rem;
+  color: #cce;
+  text-align: center;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity 0.5s;
+}
+
+.fact-ticker .fact-icon {
+  font-size: 1.2rem;
+}
+
+.fact-ticker .fact-label {
+  font-family: 'Orbitron', monospace;
+  color: var(--accent);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  margin-right: 6px;
+}
+
+/* ════════════════════════════════════
+   PLANET LEGEND (bottom row)
+════════════════════════════════════ */
+.planet-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.legend-item:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: var(--accent);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════
+   BOOTSTRAP MODAL — DARK SPACE THEME
+════════════════════════════════════ */
+.modal-content {
+  background: linear-gradient(135deg, #050a1a 0%, #0a0f2e 100%);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 18px;
+  color: #fff;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  padding: 20px 24px 16px;
+}
+
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+}
+
+/* White close button */
+.btn-close {
+  filter: invert(1) brightness(2);
+}
+
+/* ── Planet Hero Circle ── */
+.planet-hero {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  display: block;
+  box-shadow: 0 0 40px var(--planet-color, #fff), 0 0 80px var(--planet-color, #fff);
+  transition: box-shadow 0.3s;
+}
+
+/* ── Planet Stat Cards ── */
+.planet-stat {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+}
+
+.planet-stat .stat-label {
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.planet-stat .stat-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ── Planet Type Badge ── */
+.planet-type-badge {
+  font-size: 0.7rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+}
+
+/* ── Fun Facts List ── */
+.facts-list {
+  list-style: none;
+  padding: 0;
+}
+
+.facts-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.88rem;
+  color: #ccd;
+  display: flex;
+  gap: 10px;
+}
+
+.facts-list li::before {
+  content: '✦';
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(0, 212, 255, 0.15);
+}
+
+/* ════════════════════════════════════
+   HOVER TOOLTIP
+════════════════════════════════════ */
+#planet-tooltip {
+  position: fixed;
+  background: rgba(0, 10, 30, 0.9);
+  border: 1px solid var(--accent);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  pointer-events: none;
+  display: none;
+  z-index: 9999;
+  letter-spacing: 1px;
+}
+
+/* ════════════════════════════════════
+   FOOTER
+════════════════════════════════════ */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 10px;
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE (Mobile)
+════════════════════════════════════ */
+@media (max-width: 600px) {
+  #solar-canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+
+/* ════════════════════════════════════
+   REACT PLANET LEGEND — New Styles
+   (These styles are for the React
+    component we built in PlanetLegend.jsx)
+════════════════════════════════════ */
+
+/* ── Wrapper around the whole legend ── */
+.react-legend-wrapper {
+  max-width: 700px;
+  margin: 0 auto 30px;
+  padding: 0 10px;
+}
+
+/* ── Legend Title ── */
+.react-legend-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+/* ── Grid of planet cards ── */
+.react-legend-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ── Single planet card ── */
+.react-planet-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect — glow + lift */
+.react-planet-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--hover-color, var(--accent));
+  background: rgba(0, 212, 255, 0.08);
+  box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15);
+}
+
+/* Active / selected card */
+.react-planet-card.selected {
+  border-color: var(--hover-color, var(--accent));
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+/* ── Planet circle dot ── */
+.react-planet-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 10px var(--dot-color, #fff);
+}
+
+/* Spin animation on hover */
+.react-planet-card:hover .react-planet-dot {
+  transform: scale(1.3);
+}
+
+/* ── Planet name label ── */
+.react-planet-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  color: #ccd;
+  text-transform: uppercase;
+}
+
+/* ── Planet type badge (Rocky/Gas/Ice) ── */
+.react-planet-type {
+  font-size: 0.55rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-family: 'Exo 2', sans-serif;
+  opacity: 0.85;
+}
+
+/* ── Neptune highlight badge ── */
+.react-neptune-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #4b70dd;
+  color: white;
+  font-size: 0.45rem;
+  padding: 2px 5px;
+  border-radius: 6px;
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 0.5px;
+  animation: pulse-badge 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.95); }
+}
+
+/* ── Selected planet info bar ── */
+.react-selected-info {
+  margin-top: 14px;
+  background: rgba(0, 212, 255, 0.06);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.react-info-planet-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.react-info-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.react-info-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.react-info-stat-label {
+  font-size: 0.6rem;
+  color: var(--accent);
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.react-info-stat-value {
+  font-size: 0.82rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.react-info-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.react-info-btn:hover {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ── React badge on title ── */
+.react-badge {
+  display: inline-block;
+  background: rgba(97, 218, 251, 0.15);
+  border: 1px solid rgba(97, 218, 251, 0.4);
+  color: #61dafb;
+  font-size: 0.55rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-family: 'Exo 2', sans-serif;
+  margin-left: 8px;
+  vertical-align: middle;
+  letter-spacing: 1px;
+}
+
+
+/* ── Moon Section (below planet grid) ── */
+.react-moon-section {
+  margin-top: 16px;
+  border-top: 1px solid rgba(200, 200, 220, 0.15);
+  padding-top: 14px;
+}
+
+.react-moon-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: #8899aa;
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}

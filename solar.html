@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solar System Visualizer</title>
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet"/>
+
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="solar.css"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════ -->
+  <!--  NAVBAR                            -->
+  <!-- ═══════════════════════════════════ -->
+  <nav class="navbar navbar-dark fixed-top px-4">
+    <span class="navbar-brand">☀ SOLAR SYSTEM</span>
+    <div class="d-flex gap-2 align-items-center">
+      <span class="nav-badge">INTERACTIVE</span>
+      <span class="nav-badge" id="live-badge">● LIVE</span>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════ -->
+  <!--  STAR BACKGROUND CANVAS            -->
+  <!-- ═══════════════════════════════════ -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════ -->
+  <!--  HOVER TOOLTIP                     -->
+  <!-- ═══════════════════════════════════ -->
+  <div id="planet-tooltip"></div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!--  MAIN CONTENT WRAPPER              -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="main-wrapper">
+
+    <!-- Solar System Canvas -->
+    <div class="text-center pt-3 pb-1">
+      <canvas id="solar-canvas" width="700" height="700"></canvas>
+    </div>
+
+    <!-- Space Facts Ticker -->
+    <div class="fact-ticker" id="fact-ticker">
+      <span class="fact-icon">🚀</span>
+      <div>
+        <span class="fact-label">DID YOU KNOW &nbsp;</span>
+        <span id="fact-text">Loading space facts...</span>
+      </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+      <h6>⚙ Mission Controls</h6>
+      <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+
+        <!-- Speed Buttons -->
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn-space" id="btn-pause" onclick="togglePause()">⏸ PAUSE</button>
+          <button class="btn-space" onclick="setSpeed(0.5)">🐢 SLOW</button>
+          <button class="btn-space active" onclick="setSpeed(1)">▶ NORMAL</button>
+          <button class="btn-space" onclick="setSpeed(2.5)">⚡ FAST</button>
+          <button class="btn-space btn-space-danger" onclick="setSpeed(5)">🔥 WARP</button>
+        </div>
+
+        <!-- Speed Slider -->
+        <div class="d-flex align-items-center gap-2">
+          <span class="speed-label">SPEED</span>
+          <input
+            type="range"
+            class="form-range"
+            id="speed-slider"
+            min="0.1" max="6" step="0.1" value="1"
+            oninput="setSpeed(parseFloat(this.value))"
+            style="width:110px;"
+          />
+          <span class="speed-label" id="speed-val">1.0x</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!--  PLANET LEGEND — Built with React  -->
+    <!--  React renders here via CDN        -->
+    <!-- ═══════════════════════════════════ -->
+    <div id="react-legend-root"></div>
+
+  </div><!-- end main-wrapper -->
+
+  <!-- ═══════════════════════════════════ -->
+  <!--  PLANET INFO MODAL (Bootstrap)     -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="modal fade" id="planetModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="modal-planet-name">Planet</h5>
+            <div class="mt-1" id="modal-planet-badges"></div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body px-4 py-3">
+          <div class="row g-3">
+
+            <!-- Column 1: Planet Visual + Description -->
+            <div class="col-12 col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
+              <div id="modal-planet-visual" class="planet-hero"></div>
+              <p id="modal-planet-desc" class="text-muted" style="font-size:0.82rem; line-height:1.6;"></p>
+            </div>
+
+            <!-- Column 2: Planet Stats -->
+            <div class="col-12 col-md-4">
+              <div class="planet-stat">
+                <div class="stat-label">Distance from Sun</div>
+                <div class="stat-value" id="stat-distance"></div>
+              </div>
+              <div class="planet-stat">
+                <div class="stat-label">Orbital Period</div>
+                <div class="stat-value" id="stat-period"></div>
+              </div>
+              <div class="planet-stat">
+                <div class="stat-label">Diameter</div>
+                <div class="stat-value" id="stat-diameter"></div>
+              </div>
+              <div class="planet-stat">
+                <div class="stat-label">Moons</div>
+                <div class="stat-value" id="stat-moons"></div>
+              </div>
+              <div class="planet-stat">
+                <div class="stat-label">Surface Temp</div>
+                <div class="stat-value" id="stat-temp"></div>
+              </div>
+            </div>
+
+            <!-- Column 3: Fun Facts -->
+            <div class="col-12 col-md-4">
+              <p style="font-family:'Orbitron',monospace; font-size:0.65rem; color:var(--accent); letter-spacing:2px; margin-bottom:10px;">
+                FASCINATING FACTS
+              </p>
+              <ul class="facts-list" id="modal-facts"></ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer justify-content-between">
+          <small style="color:#555; font-family:'Orbitron',monospace; font-size:0.6rem; letter-spacing:1px;">
+            CLICK ANY PLANET TO EXPLORE
+          </small>
+          <button type="button" class="btn-space" data-bs-dismiss="modal">CLOSE MISSION</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!--  FOOTER                            -->
+  <!-- ═══════════════════════════════════ -->
+  <footer>
+    SOLAR SYSTEM VISUALIZER &nbsp;·&nbsp; SEMESTER PROJECT &nbsp;·&nbsp; HTML + BOOTSTRAP + JS + REACT
+  </footer>
+
+  <!-- Bootstrap 5 JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!--  REACT CDN (no npm needed!)            -->
+  <!--  We use Babel so we can write JSX      -->
+  <!--  directly inside a script tag          -->
+  <!-- ═══════════════════════════════════════ -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Our Main JavaScript (animation, canvas) -->
+  <script src="solar.js"></script>
+
+  <!-- Our React Component (Planet Legend) -->
+  <script type="text/babel" src="solar.jsx"></script>
+
+</body>
+</html>
